@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 
-from os import write
 import sys
 import signal
 import time
