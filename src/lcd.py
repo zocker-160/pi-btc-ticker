@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#! /usr/bin/python3
 import time
 import RPi.GPIO as GPIO
 
@@ -18,7 +18,7 @@ E_PULSE = 0.0005
 E_DELAY = 0.0005
 
 def lcd_send_byte(bits, mode):
-	# Pins auf LOW setzen
+	# set pins to low
 	GPIO.output(LCD_RS, mode)
 	GPIO.output(LCD_DATA4, GPIO.LOW)
 	GPIO.output(LCD_DATA5, GPIO.LOW)
