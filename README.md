@@ -7,7 +7,7 @@
 - Raspberry Pi (Zero/1/2/3/4)
 - LCD screen (16x2)
 - Python3
-- Binance API key
+- Binance API key; [create one here](https://www.binance.com/userCenter/createApi.html)
 
 ### Installation
 
