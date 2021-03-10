@@ -6,7 +6,8 @@
 
 - Raspberry Pi (Zero/1/2/3/4)
 - LCD screen (16x2)
-- python3
+- Python3
+- Binance API key
 
 ### Installation
 
@@ -18,6 +19,11 @@ cd pi-btc-ticker
 
 # install requirements
 sudo -H pip3 install -r requirements.txt
+
+# set your own Binance KEY and SECRET
+nano src/main.py
+
+# paste your key into the API_KEY and API_SECRET variables
 
 # run
 python3 src/main.py
