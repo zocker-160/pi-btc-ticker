@@ -28,3 +28,8 @@ crontab -e
 # add
 @reboot python3 /path/to/repo/src/main.py
 ```
+
+
+## Credits
+
+Thanks to Felix [in this article](https://tutorials-raspberrypi.de/raspberry-pi-lcd-display-16x2-hd44780/) for the nice template for the lcd script.
