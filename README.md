@@ -38,4 +38,4 @@ crontab -e
 
 ## Credits
 
-Thanks to Felix [in this article](https://tutorials-raspberrypi.de/raspberry-pi-lcd-display-16x2-hd44780/) for the nice template for the lcd script.
+Thanks to Felix [in this article](https://tutorials-raspberrypi.de/raspberry-pi-lcd-display-16x2-hd44780/) for the nice template for the lcd script (up to commit 427514822c039ffb7c0a27f742430b5def5ee37d)
