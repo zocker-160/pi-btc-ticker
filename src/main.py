@@ -57,14 +57,17 @@ def _closeConnection(signum, frame):
     reactor.stop()
     writeThread.join()
 
+    lcd.close()
+
 def writeLCD():
     global currentPrice
     global running
 
     while running:
         print(f"LCD {currentPrice}")
-        #lcd.writeLine2(str(currentPrice))
+        lcd.writeLine2(str(currentPrice))
         time.sleep(1)
+
 
 if __name__ == "__main__":
     lcd = LCD()
@@ -72,8 +75,8 @@ if __name__ == "__main__":
     #all = client.get_all_tickers()
 
     # init screen
-    lcd.clean()
+    #lcd.clear()
     lcd.writeLine1("BTC / EUR")
 
-    getMethod(client, lcd)
-    #wsMethod(client)
+    #getMethod(client, lcd)
+    wsMethod(client)
