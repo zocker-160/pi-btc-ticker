@@ -18,7 +18,7 @@ class LCD:
         self._toDisplay()
 
     def _toDisplay(self):
-        self.clear()
+        #self.clear()
         self.lcd.write_string(f"{self.line1}\n{self.line2}")
 
     def clear(self):

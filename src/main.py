@@ -14,69 +14,68 @@ from lcd import LCD
 API_KEY = "YOUR KEY"
 API_SECRET = "YOUR SECRET"
 
-currentPrice: float = 0
+class Ticker:
+    def __init__(self, symbol: str) -> None:
+        self.symbol = symbol
 
-def getMethod(client: Client, lcd: LCD):
-    while True:
-        try:
-            #client.ping()
-            #price: dict = client.get_avg_price(symbol="BTCEUR")
-            price: dict = client.get_symbol_ticker(symbol="BTCEUR")
-        except KeyboardInterrupt:
-            print("exiting....")
-            sys.exit()
+        print("init BTC ticker...")
+        self.lcd = LCD()
+        self.client = Client(api_key=API_KEY, api_secret=API_SECRET)
 
-        lcd.writeLine2(price.get("price"))
-        time.sleep(1)
-        #print(price.get("price"))
+        # init screen
+        self.lcd.clear()
+        self.lcd.writeLine1("BTC / EUR")
 
-def wsMethod(client: Client):
-    bm = BinanceSocketManager(client)
+        self.running: bool = False
+        self.currentPrice: float = 0
 
-    signal.signal(signal.SIGINT, _closeConnection)
-    signal.signal(signal.SIGTERM, _closeConnection)
+    def getMethod(self):
+        """ Poll price by sending an active request to the binance server """
+        while True:
+            try:
+                #client.ping()
+                #price: dict = client.get_avg_price(symbol="BTCEUR")
+                price: dict = self.client.get_symbol_ticker(symbol=self.symbol)
+            except KeyboardInterrupt:
+                print("exiting....")
+                sys.exit()
 
-    bm.start_trade_socket("BTCEUR", _wsCallback)
-    bm.start()
+            self.lcd.writeLine2(price.get("price"))
+            time.sleep(1)
+            #print(price.get("price"))
 
-    global writeThread
-    global running
-    running = True
-    writeThread = Thread(target=writeLCD)
-    writeThread.start()
+    def wsMethod(self):
+        """ Get current price by using a websocket connection """
+        bm = BinanceSocketManager(self.client)
 
-def _wsCallback(msg: dict):
-    global currentPrice
-    currentPrice = float(msg.get("p"))
-    print(f'Preis: {msg.get("p")}')
+        signal.signal(signal.SIGINT, self._closeConnection)
+        signal.signal(signal.SIGTERM, self._closeConnection)
 
-def _closeConnection(signum, frame):
-    print("exiting...")
-    global running
-    running = False
-    reactor.stop()
-    writeThread.join()
+        bm.start_trade_socket(self.symbol, self._wsCallback)
+        bm.start()
 
-    lcd.close()
+        self.running = True
+        self.writeThread = Thread(target=self.writeLCD)
+        self.writeThread.start()
 
-def writeLCD():
-    global currentPrice
-    global running
+    def _wsCallback(self, msg: dict):
+        self.currentPrice = float(msg.get("p"))
+        print(f'Preis: {self.currentPrice}')
 
-    while running:
-        print(f"LCD {currentPrice}")
-        lcd.writeLine2(str(currentPrice))
-        time.sleep(1)
+    def writeLCD(self):
+        while self.running:
+            print(f"LCD {self.currentPrice}")
+            self.lcd.writeLine2(str(self.currentPrice))
+            time.sleep(1)
 
+    def _closeConnection(self, signum, frame):
+        print("exiting...")
+        self.running = False
+        reactor.stop()
+        self.writeThread.join()
+
+        self.lcd.close()    
 
 if __name__ == "__main__":
-    lcd = LCD()
-    client = Client(api_key=API_KEY, api_secret=API_SECRET)
-    #all = client.get_all_tickers()
-
-    # init screen
-    #lcd.clear()
-    lcd.writeLine1("BTC / EUR")
-
-    #getMethod(client, lcd)
-    wsMethod(client)
+    tc = Ticker("BTCEUR")
+    tc.wsMethod()
