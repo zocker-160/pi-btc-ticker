@@ -1,5 +1,9 @@
 # BTC ticker for Raspberry Pi LCD (16x2) screen
 
+## Showcase
+
+Thanks to [Computer Tipps](https://www.youtube.com/channel/UCcV-vxvyXHRmcQ990y4Rshw/videos) for the the [video demonstration](https://youtu.be/EGstr4VIqdQ)!
+
 ## How to install
 
 ### Requirements
@@ -33,8 +37,7 @@ crontab -e
 
 # add
 @reboot python3 /path/to/repo/src/main.py
-```
-
+``` 
 
 ## Credits
 
